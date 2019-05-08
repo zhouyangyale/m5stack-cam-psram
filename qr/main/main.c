@@ -97,6 +97,7 @@ void app_main()
     // flip img, other cam setting view sensor.h
     sensor_t *s = esp_camera_sensor_get();
     s->set_vflip(s, 1);
+	s->set_hmirror(s, 1);
 #endif
 
 #ifdef CONFIG_QR_RECOGNIZE

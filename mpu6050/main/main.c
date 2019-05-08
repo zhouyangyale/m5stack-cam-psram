@@ -19,38 +19,7 @@
 
 static const char* TAG = "camera";
 #define CAM_USE_WIFI
-/*
-#define M5_CAM_KIND 2 // 1 --> A model, 2 --> B model
-#define FISH_EYE_CAM  // fish eye need flip image
-#define CAM_USE_WIFI
 
-#if M5_CAM_KIND == 1
-#define CAM_PIN_SIOD    25
-#define CAM_PIN_VSYNC   22
-#else
-#define CAM_PIN_SIOD    22
-#define CAM_PIN_VSYNC   25
-#endif
-
-//M5STACK_CAM PIN Map
-#define CAM_PIN_RESET   15 //software reset will be performed
-#define CAM_PIN_XCLK    27
-#define CAM_PIN_SIOC    23
-
-#define CAM_PIN_D7      19
-#define CAM_PIN_D6      36
-#define CAM_PIN_D5      18
-#define CAM_PIN_D4      39
-#define CAM_PIN_D3      5
-#define CAM_PIN_D2      34
-#define CAM_PIN_D1      35
-#define CAM_PIN_D0      32
-
-#define CAM_PIN_HREF    26
-#define CAM_PIN_PCLK    21
-
-#define CAM_XCLK_FREQ   10000000
-*/
 #define ESP_WIFI_SSID "M5Imu_Cam"
 #define ESP_WIFI_PASS ""
 #define MAX_STA_CONN  1
@@ -127,6 +96,7 @@ void app_main()
     // flip img, other cam setting view sensor.h
     sensor_t *s = esp_camera_sensor_get();
     s->set_vflip(s, 1);
+	s->set_hmirror(s, 1);
 #endif
     xTaskCreate(&task_initI2C, "mpu_task", 2048, NULL, 5, NULL);
     vTaskDelay(500/portTICK_PERIOD_MS);

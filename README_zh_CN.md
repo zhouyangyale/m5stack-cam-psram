@@ -48,10 +48,6 @@
 
 <img src="https://m5stack.oss-cn-shenzhen.aliyuncs.com/image/m5-docs_table/camera_comparison/camera_main_comparison_en.png">
 
-#### A模型和B模型的图片
-
-<img src="https://m5stack.oss-cn-shenzhen.aliyuncs.com/image/m5-docs_table/camera_comparison/diff_A_B.png">
-
 #### 引脚比较
 
 <img src="https://m5stack.oss-cn-shenzhen.aliyuncs.com/image/m5-docs_table/camera_comparison/CameraPinComparison_en.png">
@@ -94,6 +90,8 @@ esp_camera_fb_return(fb);
 sensor_t *s = esp_camera_sensor_get();
 s->set_framesize(s, FRAMESIZE_VGA);
 s->set_quality(s, 10);
+s->set_vflip(s, 1);
+s->set_hmirror(s, 1);
 ...
 ```
 
