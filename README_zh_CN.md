@@ -1,44 +1,44 @@
-# [M5Camera (B Model)](https://docs.m5stack.com/#/zh_CN/unit/m5camera) / M5CameraX 固件
+# 摄像机单元固件
 
-[English](https://github.com/m5stack/m5stack-cam-psram/blob/master/README.md) | 中文 | [日本語](https://github.com/m5stack/m5stack-cam-psram/blob/master/README_ja.md)
-
-## 固件说明
-
-这个基于[esp32-camera](https://github.com/espressif/esp32-camera.git)的存储库是[M5Camera](https://docs.m5stack.com/#/zh_CN/unit/m5camera)的固件。此外，它还提供了一些工具，可以将捕获的帧数据转换为更常见的BMP和JPEG格式。
-
-## 注意
+[English](https://github.com/m5stack/m5stack-cam-psram/blob/master/README.md) | 中文
 
 现在，M5Stack有四种类型的摄像机单元，分别有[ESP32CAM](https://docs.m5stack.com/#/zh_CN/unit/esp32cam)，[M5Camera (A Model)](https://docs.m5stack.com/#/zh_CN/unit/m5camera)，[M5Camera (B Model)](https://docs.m5stack.com/#/zh_CN/unit/m5camera)，M5CameraX，[M5CameraF](https://docs.m5stack.com/#/zh_CN/unit/m5camera_f)。
 
+<img src="img/camera_boards.png">
+
 这些相机之间的主要区别是**内存**，**接口**，**镜头**，**可选硬件**和**相机外壳**。
 
-**不同的文件夹对应于不同的功能:**
+## 固件说明
 
-注意：mpu6050不支持摄像头ESP32CAM，M5Camera (A Model),其余功能支持所有型号摄像头。使用时,需要在idf 配置文件中选择摄像头型号。
+该仓库的代码适于这些板子，每个文件夹对应一种功能。
 
-第一步:配置摄像头型号
+- [mpu6050](https://github.com/zhouyangyale/m5stack-cam-psram/tree/master/mpu6050) -> 焊接 MPU6050 芯片之后，陀螺仪的例程
+
+- [qr](https://github.com/zhouyangyale/m5stack-cam-psram/tree/master/qr) -> 二维码识别的例程
+
+- [uart](https://github.com/zhouyangyale/m5stack-cam-psram/tree/master/uart) -> 与 [M5Core](https://docs.m5stack.com/#/zh_CN/core/basic) 之间进行串口通信的例程
+
+- [wifi](https://github.com/zhouyangyale/m5stack-cam-psram/tree/master/wifi) -> 通过 WIFI 传输图像的例程
+
+**注意，在编译下载代码之前，需要先执行以下操作，配置成对应的板子。**
+
+第一步：搭建好 ESP-IDF 环境之后，在终端 Terminal 中，执行 `make menuconfig`
+
+第二步：配置摄像头型号
 
 <img src="https://github.com/zhouyangyale/m5stack-cam-psram/blob/master/img/board.png">
 
 <img src="https://github.com/zhouyangyale/m5stack-cam-psram/blob/master/img/board_.png">
 
-第二步：打开psram
+第三步：打开psram
 
 <img src="https://github.com/zhouyangyale/m5stack-cam-psram/blob/master/img/spi.png">
 
 <img src="https://github.com/zhouyangyale/m5stack-cam-psram/blob/master/img/ignore.png">
 
-源码：
+第三步：在终端 Terminal 中，执行 `make`，确保编译无误
 
-- [mpu6050](https://github.com/zhouyangyale/m5stack-cam-psram/tree/master/mpu6050) -> 陀螺仪
-
-- [qr](https://github.com/zhouyangyale/m5stack-cam-psram/tree/master/qr) -> 二维码识别
-
-- [uart](https://github.com/zhouyangyale/m5stack-cam-psram/tree/master/uart) -> 串口发送
-
-- [wifi](https://github.com/zhouyangyale/m5stack-cam-psram/tree/master/wifi) -> 无线网络
-
-### 不同版本相机的比较
+### 不同版本相机的比较 ( ESP32CAM, M5Camera (A Model), M5Camera (B Model), M5CameraF )
 
 下图是他们的对照表。 （注意：因为接口有很多不同的引脚，所以我做了一个单独的表进行比较。）
 
@@ -52,15 +52,15 @@
 
 <img src="https://m5stack.oss-cn-shenzhen.aliyuncs.com/image/m5-docs_table/camera_comparison/diff_A_B.png">
 
-### 界面比较
+#### 引脚比较
 
 <img src="https://m5stack.oss-cn-shenzhen.aliyuncs.com/image/m5-docs_table/camera_comparison/CameraPinComparison_en.png">
 
-#### 界面差异
+<!-- #### 界面差异
 
 下表显示了基于`Interface Comparison`表的相机电路板之间的接口差异。
 
-<img src="https://m5stack.oss-cn-shenzhen.aliyuncs.com/image/m5-docs_table/camera_comparison/CameraPinDifference_en.png">
+<img src="https://m5stack.oss-cn-shenzhen.aliyuncs.com/image/m5-docs_table/camera_comparison/CameraPinDifference_en.png"> -->
 
 ## 重要的是要记住
 
@@ -68,11 +68,6 @@
 - 使用YUV或RGB会给芯片带来很大的压力，因为写入PSRAM并不是特别快。 结果是图像数据可能丢失。 如果启用WiFi，则尤其如此。 如果您需要RGB数据，建议使用`fmt2rgb888`或`fmt2bmp`/`frame2bmp`捕获JPEG然后转换为RGB。
 - 当使用1帧缓冲区时，驱动程序将等待当前帧完成（VSYNC）并启动I2S DMA。 获取帧后，I2S将停止，帧缓冲区返回到应用程序。 这种方法可以更好地控制系统，但会导致获得帧的时间更长。
 - 当使用2个或更多帧缓冲时，I2S以连续模式运行，每个帧被推送到应用程序可以访问的队列。 这种方法会给CPU/Memory带来更大的压力，但允许帧速率加倍。 请仅使用JPEG。
-
-## 安装说明
-
-- 克隆或下载并将存储库解压缩到ESP-IDF项目的components文件夹中
-- `Make`
 
 ## API
 
