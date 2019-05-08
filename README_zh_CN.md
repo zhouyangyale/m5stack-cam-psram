@@ -38,8 +38,6 @@
 
 第三步：在终端 Terminal 中，执行 `make`，确保编译无误
 
-这个基于[esp32-camera](https://github.com/espressif/esp32-camera.git)的存储库是[M5Camera](https://docs.m5stack.com/#/zh_CN/unit/m5camera)的固件。此外，它还提供了一些工具，可以将捕获的帧数据转换为更常见的BMP和JPEG格式。
-
 ### 不同版本相机的比较 ( ESP32CAM, M5Camera (A Model), M5Camera (B Model), M5CameraF )
 
 下图是他们的对照表。 （注意：因为接口有很多不同的引脚，所以我做了一个单独的表进行比较。）
